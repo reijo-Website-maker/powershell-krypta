@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="fi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07110b">
+  <title>{% block title %}PowerShell Krypta{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="scanlines" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="{{ url_for('index') }}"><span class="brand-mark">&gt;_</span><span>POWER<span class="brand-light">SHELL</span><b> KRYPTA</b></span></a>
+    <nav class="nav">
+      {% if current_username %}
+        <span class="nav-user"><span class="status-dot"></span>{{ current_username }}</span>
+        <a href="{{ url_for('dashboard') }}">PELI</a>
+        <form method="post" action="{{ url_for('logout') }}" class="inline-form">
+          <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+          <button class="nav-logout" type="submit">KIRJAUDU ULOS</button>
+        </form>
+      {% else %}
+        <a href="{{ url_for('login') }}">KIRJAUDU</a>
+        <a class="nav-register" href="{{ url_for('register') }}">REKISTERÖIDY <span>↗</span></a>
+      {% endif %}
+    </nav>
+  </header>
+
+  <main class="page-shell">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}<section class="flash-stack" aria-live="polite">
+        {% for category, message in messages %}<div class="flash flash-{{ category }}"><span class="flash-symbol">{% if category == 'success' %}✓{% elif category == 'error' %}!{% else %}i{% endif %}</span><span>{{ message }}</span></div>{% endfor %}
+      </section>{% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footer"><span>PS_KRYPTA // TRAINING ENVIRONMENT</span><span>COMMANDS ARE NEVER EXECUTED <i>●</i></span></footer>
+</body>
+</html>

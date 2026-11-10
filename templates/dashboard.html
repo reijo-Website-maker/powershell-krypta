@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Pelaajan hallinta // PowerShell Krypta{% endblock %}
+{% block content %}
+<section class="dashboard-head">
+  <div><div class="eyebrow"><span class="pulse"></span> PLAYER DASHBOARD</div><h1>TERVETULOA, <span>{{ current_username|upper }}</span><b class="cursor">_</b></h1><p class="muted">Valitse seuraava huone ja jatka harjoittelua.</p></div>
+  <div class="player-chip"><span class="avatar">{{ current_username[0]|upper }}</span><div><small>PELAAJA</small><b>{{ current_username }}</b></div><span class="online-dot"></span></div>
+</section>
+<section class="stats-grid">
+  <article class="stat-card"><span class="stat-label">SUORITETUT HUONEET</span><strong>{{ completed }}<small>/7</small></strong><div class="stat-track"><i style="width:{{ completed / 7 * 100 }}%"></i></div></article>
+  <article class="stat-card"><span class="stat-label">KOKEMUSPISTEET</span><strong>{{ score }}<small> XP</small></strong><div class="stat-caption">100 XP / tehtävä, vihje −10 XP</div></article>
+  <article class="stat-card"><span class="stat-label">KÄYTETYT VIHJEET</span><strong>{{ hints }}</strong><div class="stat-caption">Vihjeitä kannattaa käyttää harkiten.</div></article>
+</section>
+<div class="section-heading"><div><div class="eyebrow">[ MISSION SELECT ]</div><h2>KRYPTAN HUONEET</h2></div><span class="section-count">{{ completed }} / 7 CLEARED</span></div>
+<section class="room-grid">
+  {% for room in rooms %}
+    {% set state = progress.get(loop.index0, {}) %}
+    <article class="room-card {% if state.get('completed') %}is-done{% elif loop.index0 == active %}is-active{% else %}is-locked{% endif %}">
+      <div class="room-card-top"><span class="room-number">NODE_{{ '%02d'|format(loop.index) }}</span><span class="room-icon">{{ room.icon }}</span></div>
+      <h3>{{ room.name }}</h3><p>{{ room.subtitle }}</p>
+      <div class="room-card-bottom">
+        {% if state.get('completed') %}<span class="state state-done">✓ CLEARED</span><a class="room-link" href="{{ url_for('play_room', room_index=loop.index0) }}">KATSO <b>↗</b></a>
+        {% elif loop.index0 == active %}<span class="state state-active"><i></i> ACTIVE</span><a class="room-link" href="{{ url_for('play_room', room_index=loop.index0) }}">ALOITA <b>→</b></a>
+        {% else %}<span class="state state-locked">▣ LOCKED</span><span class="lock-label">LUKITTU</span>{% endif %}
+      </div>
+    </article>
+  {% endfor %}
+</section>
+{% if completed == 7 %}<section class="victory-banner"><div><span class="eyebrow">[ ALL SYSTEMS CLEARED ]</span><h2>ONNEKSI OLKOON, MESTARI!</h2><p>Olet läpäissyt kaikki PowerShell Kryptan tehtävät.</p></div><span class="victory-icon">✧</span></section>{% endif %}
+{% endblock %}

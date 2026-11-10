@@ -1,0 +1,26 @@
+[Unit]
+Description=PowerShell Krypta Flask game
+After=network.target
+
+[Service]
+Type=simple
+User=krypta
+Group=krypta
+WorkingDirectory=/opt/powershell-krypta
+EnvironmentFile=/etc/powershell-krypta.env
+StateDirectory=powershell-krypta
+StateDirectoryMode=0750
+ExecStart=/opt/powershell-krypta/.venv/bin/gunicorn --workers 2 --bind 127.0.0.1:8000 --access-logfile - --error-logfile - app:app
+Restart=on-failure
+RestartSec=3
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+
+[Install]
+WantedBy=multi-user.target

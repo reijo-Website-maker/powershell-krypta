@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}{% if mode == 'register' %}Rekisteröidy{% else %}Kirjaudu{% endif %} // PowerShell Krypta{% endblock %}
+{% block content %}
+<section class="auth-wrap">
+  <div class="auth-aside">
+    <div class="auth-symbol">&gt;_</div>
+    <div class="eyebrow">[ PLAYER ACCESS ]</div>
+    <h1>{% if mode == 'register' %}LUO<br>PELAAJA-<br><span>TUNNUS.</span>{% else %}PALAA<br>TAKAISIN<br><span>KRYPTAAN.</span>{% endif %}</h1>
+    <p>{% if mode == 'register' %}Uusi matka alkaa tästä. Luo tunnus ja tallenna oma etenemisesi.{% else %}Kirjaudu sisään ja jatka siitä, mihin viimeksi jäit.{% endif %}</p>
+    <div class="aside-status"><span class="status-dot"></span> AUTHENTICATION SYSTEM ONLINE</div>
+  </div>
+  <div class="auth-panel">
+    <div class="panel-topline"><span>SECURE GATEWAY</span><span>01 / 01</span></div>
+    <h2>{% if mode == 'register' %}Rekisteröidy{% else %}Kirjaudu sisään{% endif %}<span class="green-dot">.</span></h2>
+    <p class="panel-sub">{% if mode == 'register' %}Täytä tiedot avataksesi pelaajaprofiilin.{% else %}Anna tunnuksesi päästäksesi peliin.{% endif %}</p>
+    <form method="post" class="auth-form">
+      <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+      <label for="username">KÄYTTÄJÄTUNNUS</label>
+      <div class="input-wrap"><span>@</span><input id="username" name="username" required minlength="3" maxlength="24" autocomplete="username" placeholder="pelaaja01" value="{{ request.form.get('username', '') }}"></div>
+      <label for="password">SALASANA</label>
+      <div class="input-wrap"><span>✳</span><input id="password" type="password" name="password" required minlength="{% if mode == 'register' %}10{% else %}1{% endif %}" maxlength="128" autocomplete="{% if mode == 'register' %}new-password{% else %}current-password{% endif %}" placeholder="{% if mode == 'register' %}Vähintään 10 merkkiä{% else %}Salasanasi{% endif %}"></div>
+      {% if mode == 'register' %}<p class="field-help">3–24 merkkiä. Käytä kirjaimia, numeroita, pistettä, alaviivaa tai väliviivaa.</p>{% endif %}
+      <button class="btn btn-primary auth-submit" type="submit">{% if mode == 'register' %}LUO TUNNUS{% else %}KIRJAUDU SISÄÄN{% endif %}<span>→</span></button>
+    </form>
+    <div class="auth-switch">{% if mode == 'register' %}Onko sinulla jo tunnus? <a href="{{ url_for('login') }}">Kirjaudu sisään →</a>{% else %}Uusi pelaaja? <a href="{{ url_for('register') }}">Luo tunnus →</a>{% endif %}</div>
+    <div class="auth-foot"><span>🔒 SALASANAT SUOJATAAN</span><span>SESSION SECURE</span></div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}{{ room.name }} // PowerShell Krypta{% endblock %}
+{% block content %}
+<div class="room-navline"><a href="{{ url_for('dashboard') }}">← TAKAKAAN KARTTAAN</a><span>MISSION NODE / {{ '%02d'|format(room_index + 1) }} OF 07</span></div>
+<section class="mission-hero">
+  <div class="mission-icon">{{ room.icon }}</div>
+  <div><div class="eyebrow"><span class="pulse"></span> ACTIVE TRAINING NODE</div><h1>{{ room.name|upper }}</h1><p>{{ room.description }}</p></div>
+  <div class="mission-number">{{ '%02d'|format(room_index + 1) }}<small>/07</small></div>
+</section>
+<div class="mission-grid">
+  <section class="mission-main">
+    <article class="content-panel">
+      <div class="panel-heading"><span class="panel-index">01</span><div><small>KNOWLEDGE BASE</small><h2>OPPITUNTI</h2></div><span class="panel-tag">READ</span></div>
+      <pre class="lesson-code">{{ room.lesson }}</pre>
+    </article>
+    <article class="content-panel challenge-panel">
+      <div class="panel-heading"><span class="panel-index">02</span><div><small>CHALLENGE REQUEST</small><h2>{{ room.title|upper }}</h2></div><span class="panel-tag">TASK</span></div>
+      <p class="challenge-prompt">{{ room.prompt }}</p>
+      {% if row.get('completed') %}
+        <div class="completed-box"><span>✓</span><div><b>TEHTÄVÄ SUORITETTU</b><small>Tämä huone on jo avattu. Hyvää työtä!</small></div></div>
+        <a class="btn btn-primary" href="{{ url_for('dashboard') }}">TAKAISIN KARTTAAN →</a>
+      {% else %}
+        <form method="post" class="answer-form">
+          <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+          <input type="hidden" name="action" value="answer">
+          <label for="answer">POWERSHELL INPUT <span>// YOUR COMMAND</span></label>
+          <textarea id="answer" name="answer" maxlength="4000" required spellcheck="false" placeholder="PS&gt; Kirjoita vastauksesi tähän...">{{ request.form.get('answer', '') }}</textarea>
+          <div class="answer-foot"><span>↳ Koodia ei suoriteta, vain tarkistetaan.</span><button class="btn btn-primary" type="submit">TARKISTA VASTAUS <b>→</b></button></div>
+        </form>
+        <form method="post" class="hint-form"><input type="hidden" name="_csrf_token" value="{{ csrf_token() }}"><input type="hidden" name="action" value="hint"><button class="btn btn-ghost btn-small" type="submit">⌁ PYYDÄ VIHJE <span>−10 XP</span></button></form>
+      {% endif %}
+    </article>
+  </section>
+  <aside class="mission-aside">
+    <div class="aside-card"><div class="aside-card-title">MISSION STATUS <span class="online-dot"></span></div><div class="mission-status-number">{{ '%02d'|format(room_index + 1) }}<small> / 07</small></div><div class="mini-progress"><i style="width:{{ (room_index + (1 if row.get('completed') else 0)) / 7 * 100 }}%"></i></div><p>{{ 'NODE CLEARED' if row.get('completed') else 'WAITING FOR INPUT' }}</p></div>
+    <div class="aside-card tips-card"><div class="aside-card-title">COMMANDER NOTES</div><p>Kirjoita PowerShell-komento tavalliseen tapaan. Kirjainkoolla ei yleensä ole väliä.</p><div class="tip-line"><span>01</span> Lue oppitunti ensin.</div><div class="tip-line"><span>02</span> Tarkista parametrit.</div><div class="tip-line"><span>03</span> Käytä vihjettä tarvittaessa.</div></div>
+    <div class="safe-card"><span>▣</span><div><b>SAFE MODE</b><small>Palvelin ei koskaan suorita vastaustasi.</small></div></div>
+  </aside>
+</div>
+{% endblock %}

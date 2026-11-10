@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}PowerShell Krypta // Aloitus{% endblock %}
+{% block content %}
+<section class="hero-grid">
+  <div class="hero-copy">
+    <div class="eyebrow"><span class="pulse"></span> SECURE TRAINING ENVIRONMENT <span class="eyebrow-code">[v1.0]</span></div>
+    <h1>OPI. HAKKEROI.<br><span>HALLITSE KOMENTORIVI.</span></h1>
+    <p class="hero-lead">Astut PowerShell Kryptaan. Ratkaise komentorivitehtäviä, avaa suljettuja huoneita ja kerää kokemusta askel kerrallaan.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="{{ url_for('register') }}">LUO PELAAJATUNNUS <span>↗</span></a>
+      <a class="btn btn-ghost" href="{{ url_for('login') }}">MINULLA ON JO TUNNUS</a>
+    </div>
+    <div class="hero-trust"><span>✓ 7 TEHTÄVÄHUONETTA</span><span>✓ OMA PELITALLENNUS</span><span>✓ TURVALLINEN HARJOITTELU</span></div>
+  </div>
+  <div class="terminal-card">
+    <div class="terminal-top"><div class="terminal-dots"><i></i><i></i><i></i></div><span>root@krypta: ~/training</span><span class="terminal-lock">● ENCRYPTED</span></div>
+    <div class="terminal-body">
+      <div class="terminal-muted">POWER SHELL KRYPTA // BOOT SEQUENCE</div>
+      <p><span class="term-green">root@krypta</span>:<span class="term-blue">~</span>$ ./initialize_training.sh</p>
+      <p class="term-ok">[ OK ] Loading PowerShell modules</p>
+      <p class="term-ok">[ OK ] Preparing challenge rooms</p>
+      <p class="term-ok">[ OK ] Player profile system</p>
+      <p class="term-ok">[ OK ] Secure session initialized</p>
+      <div class="terminal-divider"></div>
+      <p class="term-output">SYSTEM STATUS: <b>READY</b></p>
+      <p><span class="term-green">root@krypta</span>:<span class="term-blue">~</span>$ <span class="cursor">_</span></p>
+    </div>
+    <div class="terminal-bottom"><span>LOCAL TRAINING NODE</span><span>LATENCY: 2ms</span></div>
+  </div>
+</section>
+
+<section class="feature-strip">
+  <div><span class="feature-icon">⌘</span><div><b>OPI KÄYTÄNNÖSSÄ</b><small>Cmdletit, muuttujat, putket ja silmukat</small></div></div>
+  <div><span class="feature-icon">▣</span><div><b>OMA PELAAJAPROFIILI</b><small>Eteneminen tallentuu tilillesi</small></div></div>
+  <div><span class="feature-icon">◈</span><div><b>PISTEET & VIHJEET</b><small>Haasta itsesi ja kehity</small></div></div>
+</section>
+<section class="bottom-note"><span class="note-line"></span><p><b>SAFE MODE ENABLED</b> — Palvelin tarkistaa vastauksesi tekstinä. Se ei suorita lähettämääsi PowerShell-koodia.</p></section>
+{% endblock %}
